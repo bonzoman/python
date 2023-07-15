@@ -40,7 +40,7 @@ for i, URL in enumerate(URL_LIST):
     job_naeyong = soup[soup.find('"jd":') + 5: soup.find('"company_name":') - 2]
     # print("채용내용:", job_naeyong)
     company_name = soup[soup.find('"company_name":""') + 16: soup.find('"lang":""') - 2]
-    # print("회사이름 5:  ", company_name)
+    # print("회사이름 6:  ", company_name)
 
     write_ws.append([
         company_name,

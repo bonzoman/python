@@ -35,12 +35,13 @@ company = []
 due_time = []
 position = []
 skill_tags = []
-for idx in range(170500, 170600):
+skill_tags_all_list = []
+for idx in range(170000, 175000):
 
     # time.sleep(1)
 
     response = requests.get(API_URL+str(idx))
-    responseJson = response.json();
+    responseJson = response.json()
     print(SITE_URL+str(idx), responseJson)
 
     if not responseJson.__contains__('job'):
@@ -67,9 +68,30 @@ for idx in range(170500, 170600):
             skillTitles = []
             for n2 in jobObj[n]:
                 skillTitles.append(n2['title'])
+                skill_tags_all_list.append(n2['title'])  # 전체 담기
             skill_tags.append(','.join(skillTitles))
 
 
+# 첫 번째 시트 데이터
+data_sheet1 = {'page': page,
+               'company': company,
+               'due_time': due_time,
+               'position': position,
+               'skill_tags': skill_tags}
+
+# 두 번째 시트 데이터
+data_sheet2 = {'skill_tags': list(set(skill_tags_all_list))}  # 중복제거
+
+# DataFrame 객체 생성
+df1 = pd.DataFrame(data_sheet1)
+df2 = pd.DataFrame(data_sheet2)
+
+# Excel 파일로 저장
+with pd.ExcelWriter('WantedInfo.xlsx') as writer:
+    df1.to_excel(writer, sheet_name='시트1', index=False)
+    df2.to_excel(writer, sheet_name='시트2', index=False)
+
+'''
 df = pd.DataFrame()
 df['page'] = page
 df['company'] = company
@@ -78,6 +100,7 @@ df['position'] = position
 df['skill_tags'] = skill_tags
 
 df.to_excel('./WantedInfo.xlsx', sheet_name='Sheet1')
+'''
 
 print("현재 : ", datetime.now())
 

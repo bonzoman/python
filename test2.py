@@ -1,38 +1,89 @@
 import requests
 from bs4 import BeautifulSoup
-from openpyxl import Workbook
+# from openpyxl import Workbook
+import pandas as pd
+from datetime import datetime
+from time import time
 
-POSTING_NUM_LIST = []
-JOB_DESC_LIST = []  # 공고내용(col-md-12)
-TITLE_LIST = []  # 채용공고 제목(tm_mgt_title)
-COMPANY_NAME_LIST = []  # 회사이름 (tm_h2_title_company_info)
-CATEGORY_LIST = []  # 부문 (rc_categories_name)
+API_URL = 'https://www.wanted.co.kr/api/v4/jobs/'
+SITE_URL = 'https://www.wanted.co.kr/wd/'
+IDX_LIST = []
 URL_LIST = []
 
 
+'''
 def makeurl():
-    for idx in range(170491, 170492):
-        url = "https://www.wanted.co.kr/wd/" + str(idx)
+    for idx in range(170500, 170900): # 170787
+        # url = "https://www.wanted.co.kr/wd/" + str(idx)
+        url = API_URL + str(idx)
+        IDX_LIST.append(str(idx));
         URL_LIST.append(url)
 
 
 # M A I N
 makeurl()
+'''
+
+# print("현재 : ", datetime.now())
 
 
-ABC = ["A1", "B1", "C1", "D1"]
-columns = ["회사이름", "직무", "유사직무", "채용내용"]
+# write_wb = Workbook()
+# write_ws = write_wb.active
 
-write_wb = Workbook()
-write_ws = write_wb.active
+page = []
+company = []
+due_time = []
+position = []
+skill_tags = []
+for idx in range(170500, 170600):
 
-# Head Columns 만들기
-for i, URL in enumerate(URL_LIST):
-    response = requests.get(URL)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    print(soup)
-    soup = str(soup)
+    # time.sleep(1)
 
+    response = requests.get(API_URL+str(idx))
+    responseJson = response.json();
+    print(SITE_URL+str(idx), responseJson)
+
+    if not responseJson.__contains__('job'):
+        continue
+
+    # soup = BeautifulSoup(response.text, 'html.parser')
+    # print(soup)
+    # soup = str(soup)
+
+    jobObj = responseJson['job']
+    jobKeys = responseJson['job'].keys()
+    # print(jobObj)
+
+    page.append('https://www.wanted.co.kr/wd/'+str(idx))
+
+    for n in jobKeys:
+        if n == 'company':
+            company.append(jobObj[n]['name'])
+        elif n == 'due_time':
+            due_time.append(jobObj.get(n))
+        elif n == 'position':
+            position.append(jobObj.get(n))
+        elif n == 'skill_tags':
+            skillTitles = []
+            for n2 in jobObj[n]:
+                skillTitles.append(n2['title'])
+            skill_tags.append(','.join(skillTitles))
+
+
+df = pd.DataFrame()
+df['page'] = page
+df['company'] = company
+df['due_time'] = due_time
+df['position'] = position
+df['skill_tags'] = skill_tags
+
+df.to_excel('./WantedInfo.xlsx', sheet_name='Sheet1')
+
+print("현재 : ", datetime.now())
+
+print("end")
+
+'''
     jikmoo = soup[soup.find('"position":""') + 12: soup.find('"reward":') - 2]
     # print("직무:",jikmoo)
     yusa_jikmoo = soup[soup.find('"sub_categories":') + 18: soup.find('"position":""') - 2]
@@ -50,3 +101,4 @@ for i, URL in enumerate(URL_LIST):
     ])
 
 write_wb.save("Wanted.csv")  # save csv
+'''

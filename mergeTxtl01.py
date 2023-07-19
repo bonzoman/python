@@ -1,3 +1,6 @@
+"""
+텍스트 파일 두개 합치기
+"""
 # 파일 리스트
 filenames = ['./DataFiles/sampleTxt1.txt', './DataFiles/sampleTxt2.txt']
 

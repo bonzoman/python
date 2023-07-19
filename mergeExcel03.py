@@ -1,3 +1,6 @@
+"""
+특정디렉토리의 엑셀 파일 합치기
+"""
 import os
 
 import pandas as pd

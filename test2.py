@@ -54,7 +54,7 @@ API_URL = 'https://www.wanted.co.kr/api/v4/jobs/'
 SITE_URL = 'https://www.wanted.co.kr/wd/'
 
 # startNo, endNo, interval = 170001, 170012, 1000
-startNo, endNo, interval = 36182, 1000000, 1000
+startNo, endNo, interval = 59271, 1000000, 1000
 
 page, company, industry_name, due_time, position, skill_tags, country, location, hidden, status, address, \
     detail_requirements, detail_main_tasks, detail_intro, detail_benefits, detail_preferred_points, \

@@ -39,7 +39,7 @@ def merge_excel_files(file_path, file_format, save_path, save_format, columns=No
 
 
 if __name__ == "__main__":
-    merge_excel_files(file_path="./DataFiles",
+    merge_excel_files(file_path="./temp",
                       file_format=".xlsx",
-                      save_path="./DataFiles/sample_All.xlsx",
+                      save_path="./temp/WantedInfo.xlsx",
                       save_format=".xlsx")

@@ -4,7 +4,7 @@
 import openpyxl as op
 from openpyxl.styles import Color, Font, PatternFill, Border, Side
 
-wb = op.load_workbook("./temp2/WantedInfo.120767~172894.xlsx")
+wb = op.load_workbook("./WantedInfo174000.xlsx")
 ws = wb.active
 # print(ws.max_row)
 
@@ -27,4 +27,4 @@ for i in range(2, ws.max_row+1):
 for cell in ws["A"]:
     cell.hyperlink = cell.value
 
-wb.save("./temp2/WantedInfo.120767~172894.xlsx")
+wb.save("./WantedInfo174000.xlsx")
